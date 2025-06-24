@@ -6,7 +6,7 @@
 
 int fac(int n)
 {
-    if (n == 1)
+    if (n <= 1)
         return 1;
     return n * fac(n - 1);
 }
@@ -21,8 +21,8 @@ SETUP()
 
 TEAR_DOWN()
 {
-    printf("Ending execution.!");
-    return false;
+    printf("Ending execution.");
+    return true;
 }
 
 TEST(Faculty_Basic)
