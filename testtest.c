@@ -1,12 +1,16 @@
 #include "set.h"
+#include <unistd.h>
+
 #include "set_asserts.h"
 
 int fac(int n)
 {
-    if (n <= 1)
+    if (n == 1)
         return 1;
     return n * fac(n - 1);
 }
+
+void heavy_load() { sleep(5); }
 
 TEST(Faculty_Basic)
 {

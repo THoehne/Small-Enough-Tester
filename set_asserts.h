@@ -21,7 +21,7 @@
     {                                                                          \
         test->passed = false;                                                  \
         test->error_msg =                                                      \
-            format_string("Expect %d to be %d\n", act, exp) return;            \
+            format_string("Expect %d to be %d.\n", act, exp) return;           \
     }
 
 #define ASSERT_EQ_MSG(exp, act, msg)                                           \
