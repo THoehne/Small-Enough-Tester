@@ -38,7 +38,7 @@ bool set_up();
 
 bool tear_down();
 
-#define SETUP() void set_up()
+#define SETUP() bool set_up()
 #define TEAR_DOWN() bool tear_down()
 
 #define BUNDLE()                                                               \

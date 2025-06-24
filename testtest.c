@@ -1,4 +1,5 @@
 #include "set.h"
+#include <stdio.h>
 #include <unistd.h>
 
 #include "set_asserts.h"
@@ -11,6 +12,18 @@ int fac(int n)
 }
 
 void heavy_load() { sleep(5); }
+
+SETUP()
+{
+    printf("Setting up.\n");
+    return true;
+}
+
+TEAR_DOWN()
+{
+    printf("Ending execution.!");
+    return false;
+}
 
 TEST(Faculty_Basic)
 {
