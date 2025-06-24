@@ -34,6 +34,13 @@ void set_bundle_suits(struct SETSuit **suits, int *counter, bool count);
 
 int create_shared_suit_space(size_t size);
 
+bool set_up();
+
+bool tear_down();
+
+#define SETUP() void set_up()
+#define TEAR_DOWN() bool tear_down()
+
 #define BUNDLE()                                                               \
     void set_bundle_suits(struct SETSuit **suits, int *counter, bool count)
 

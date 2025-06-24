@@ -172,6 +172,12 @@ int main(int argc, char **argv)
     printf("\n\n%s", BANNER);
 #endif /* ifndef NO_BANNER */
 
+    if (!set_up())
+    {
+        fprintf(stderr, "%s\n", "Setup call returned with error. Aborting execution.");
+        return 1;
+    }
+
     int counter = 0;
 
     set_bundle_suits(NULL, &counter, true);
@@ -183,4 +189,11 @@ int main(int argc, char **argv)
     set_bundle_suits(suits, &counter, false);
 
     dispatch_test_suits(suits, counter);
+
+    if (!tear_down())
+    {
+        fprintf(stderr, "%s\n", "Teardown returned with error.");
+        return 1;
+    }
+    return 0;
 }
