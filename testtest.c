@@ -1,5 +1,6 @@
 #include "set.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "set_asserts.h"
@@ -18,12 +19,7 @@ SETUP()
     printf("Setting up.\n");
     return true;
 }
-
-TEAR_DOWN()
-{
-    printf("Ending execution.");
-    return true;
-}
+NO_TEAR_DOWN
 
 TEST(Faculty_Basic)
 {
@@ -38,19 +34,19 @@ TEST(Faculty_Negative)
     ASSERT_EQ(fac(0), 1);
 }
 
-SUIT_SETUP(Basic)
+SUIT_SETUP(Basic_Setup)
 {
     fprintf(stdout, "Some suit setup.\n");
     return true;
 }
 
-SUIT_TEAR_DOWN(Basic)
+SUIT_TEAR_DOWN(Basic_Tear_Down)
 {
     fprintf(stdout, "Some suit teardown\n");
     return true;
 }
 
-SUIT_ST(Basic, Basic, Basic)
+SUIT_ST(Basic, Basic_Setup, Basic_Tear_Down)
 {
     ADD_TEST(Faculty_Basic);
     ADD_TEST(Faculty_Negative);
@@ -62,7 +58,29 @@ TEST(Other_Basic)
     ASSERT_FALSE(false);
 }
 
-SUIT_ST(Other, Basic, EMPTY) { ADD_TEST(Other_Basic); }
+TEST(Other_With_Malloc)
+{
+    int *some_array = set_malloc(20 * sizeof(int));
+
+    for (int i = 0; i < 20; i++)
+    {
+        some_array[i] = i;
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+        fprintf(stdout, "%d ", some_array[i]);
+    }
+    fprintf(stdout, ".\n");
+
+    ASSERT_TRUE(false);
+}
+
+SUIT_ST(Other, Basic_Setup, EMPTY)
+{
+    ADD_TEST(Other_Basic);
+    ADD_TEST(Other_With_Malloc);
+}
 
 BUNDLE()
 {

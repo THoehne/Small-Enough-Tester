@@ -2,7 +2,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/types.h>
@@ -56,41 +55,6 @@
     ""
 //clang-format on
 
-char *format_string(const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    size_t size = vsnprintf(NULL, 0, fmt, args);
-    char *out = (char *)malloc(size + 1);
-
-    if (!out)
-    {
-        fprintf(stderr, "%s", "Failed to allocate for format string.\n");
-    }
-
-    va_end(args);
-
-    va_start(args, fmt);
-    vsnprintf(out, size + 1, fmt, args);
-    va_end(args);
-
-    return out;
-}
-
-int create_shared_suit_space(size_t size)
-{
-    int suit_space_id = shmget(IPC_PRIVATE, size, IPC_CREAT | 0600);
-
-    if (suit_space_id == -1)
-    {
-        fprintf(stdout, "Couldn't create suite space of size: %lu\n", size);
-        perror("shmget");
-        exit(1);
-    }
-
-    return suit_space_id;
-}
-
 
 static void log_test_summary(struct SETest *test)
 {
@@ -122,6 +86,7 @@ static void dispatch_single_test(struct SETest *test)
     {
         test->function(test);
         log_test_summary(test);
+        set_free_all();
         exit(0);
     }
 }

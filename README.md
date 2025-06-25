@@ -2,15 +2,11 @@
 
 Tiny C testing framework.
 
-## Build
+## Building a test.
 
-Building is quite simple. To build a test `test_fac.c` just pick your favourite compiler and run.
+To build a test, first build the library. Then link it to the `test.c` via:
 
-    gcc Small-Enough-Tester/set.c test_fac.c -I Small-Enough-Tester/ -D COLORIZED -lm -o test_fac
-
-Running a test is equally simple just execute the compiled binary.
-
-    ./test_fac
+    gcc src/*.c test.c -o test
 
 ## LICENSE
 
