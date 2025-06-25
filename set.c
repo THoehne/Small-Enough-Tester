@@ -129,6 +129,12 @@ static void dispatch_single_test(struct SETest *test)
 static void dispatch_tests(struct SETSuit *suit)
 {
     printf("\n\n==== Running suit: %s (%d) ====\n\n", suit->name, suit->len);
+
+    if (suit->setup != NULL && !suit->setup()) 
+    {
+        fprintf(stderr, "Suit not executed: Setup failed.\n");
+    }
+
     struct SETest *test = suit->tests;
     for (int i = 0; i < suit->len; i++)
     {
@@ -153,6 +159,11 @@ static void dispatch_tests(struct SETSuit *suit)
         fprintf(stderr, "%s\n", "Couldn't remove suit space after dispatch.");
         perror("shctl");
         exit(1);
+    }
+
+    if (suit->tear_down != NULL && !suit->tear_down()) 
+    {
+        fprintf(stderr, "Teardown failed.\n");
     }
 }
 

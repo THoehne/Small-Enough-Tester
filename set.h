@@ -27,6 +27,8 @@ struct SETSuit
     struct SETest *tests;
     int len;
     int shm_key;
+    bool (*setup)();
+    bool (*tear_down)();
     bool passed;
 };
 
@@ -37,8 +39,11 @@ void set_bundle_suits(struct SETSuit **suits, int *counter, bool count);
 
 int create_shared_suit_space(size_t size);
 
-bool set_up();
+static bool EMPTY_suit_setup() { return true; }
 
+static bool EMPTY_suit_tear_down() { return true; }
+
+bool set_up();
 bool tear_down();
 
 #define SETUP() bool set_up()
@@ -56,7 +61,7 @@ bool tear_down();
 
 // We manually allocate suits via mmap be able to mark them DONTFORK.
 // Since we don't need the suits in a test fork.
-#define SUIT(suit_name)                                                        \
+#define SUIT_ST(suit_name, setup_func, tear_down_func)                         \
     void suit_name##_suit(struct SETSuit *suit, bool count);                   \
     struct SETSuit *suit_name##_suit_contructor()                              \
     {                                                                          \
@@ -77,10 +82,18 @@ bool tear_down();
             exit(1);                                                           \
         }                                                                      \
         suit->len = 0;                                                         \
+        suit->setup = &setup_func##_suit_setup;                                \
+        suit->tear_down = &tear_down_func##_suit_tear_down;                    \
         suit_name##_suit(suit, false);                                         \
         return suit;                                                           \
     }                                                                          \
     void suit_name##_suit(struct SETSuit *suit, bool count)
+
+#define SUIT_SETUP(suit_name) bool suit_name##_suit_setup()
+
+#define SUIT_TEAR_DOWN(suit_name) bool suit_name##_suit_tear_down()
+
+#define SUIT(suit_name) SUIT_ST(suit_name, EMPTY, EMPTY)
 
 #define ADD_TEST(test_name)                                                    \
     if (!count)                                                                \

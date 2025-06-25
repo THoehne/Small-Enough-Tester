@@ -38,7 +38,19 @@ TEST(Faculty_Negative)
     ASSERT_EQ(fac(0), 1);
 }
 
-SUIT(Basic)
+SUIT_SETUP(Basic)
+{
+    fprintf(stdout, "Some suit setup.\n");
+    return true;
+}
+
+SUIT_TEAR_DOWN(Basic)
+{
+    fprintf(stdout, "Some suit teardown\n");
+    return true;
+}
+
+SUIT_ST(Basic, Basic, Basic)
 {
     ADD_TEST(Faculty_Basic);
     ADD_TEST(Faculty_Negative);
@@ -50,7 +62,7 @@ TEST(Other_Basic)
     ASSERT_FALSE(false);
 }
 
-SUIT(Other) { ADD_TEST(Other_Basic); }
+SUIT_ST(Other, Basic, EMPTY) { ADD_TEST(Other_Basic); }
 
 BUNDLE()
 {
