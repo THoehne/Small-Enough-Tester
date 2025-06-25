@@ -1,5 +1,10 @@
 .cache/
 compile_commands.json
 
+#valgrind
+vgcore*
+
 # Binary
 test
+int/
+libset.a
