@@ -61,6 +61,7 @@ TEST(Other_Basic)
 TEST(Other_With_Malloc)
 {
     int *some_array = set_malloc(20 * sizeof(int));
+    int *array = set_malloc(20);
 
     for (int i = 0; i < 20; i++)
     {
@@ -73,6 +74,10 @@ TEST(Other_With_Malloc)
     }
     fprintf(stdout, ".\n");
 
+    set_free(array);
+    set_free(some_array);
+
+    void *some_other = set_malloc(15);
     ASSERT_TRUE(false);
 }
 

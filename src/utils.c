@@ -15,7 +15,7 @@ char *format_string(const char *fmt, ...)
     va_list args;
     va_start(args, fmt);
     size_t size = vsnprintf(NULL, 0, fmt, args);
-    char *out = (char *)malloc(size + 1);
+    char *out = (char *)set_malloc(size + 1);
 
     if (!out)
     {
@@ -50,6 +50,9 @@ void *set_malloc(size_t n)
     void *blocks = malloc(n + sizeof(struct SETBlockMeta));
     struct SETBlockMeta *meta = blocks;
     meta->next = NULL;
+    meta->prev = NULL;
+
+    fprintf(stdout, "%s\n", "Some malloc");
 
     if (block_meta_head == NULL)
     {

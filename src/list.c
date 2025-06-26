@@ -1,5 +1,6 @@
 #include "list.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 void set_ll_append(struct SETBlockMeta *head, struct SETBlockMeta *next)
@@ -15,28 +16,38 @@ void set_ll_free_all(struct SETBlockMeta *head)
 {
     while (head)
     {
+        printf("Some free.\n");
         void *block_start = head;
         head = head->next;
         free(block_start);
     }
+
+    printf("Some free.\n");
 }
 
 struct SETBlockMeta *set_ll_free_one(struct SETBlockMeta *head, void *address)
 {
+
     struct SETBlockMeta *meta = address - (sizeof(struct SETBlockMeta));
 
-    if (meta == head)
+    if (meta->prev == NULL)
     {
         struct SETBlockMeta *ret = meta->next;
-        ret->prev = NULL;
-        ret->end = meta->end;
+        if (ret)
+        {
+            ret->prev = NULL;
+            ret->end = meta->end;
+        }
         free(meta);
         return ret;
     }
 
     meta->prev->next = meta->next;
-    if (meta->next)
+
+    if (meta->next != NULL)
         meta->next->prev = meta->prev;
+    else
+        head->end = meta->prev;
 
     free(meta);
 
