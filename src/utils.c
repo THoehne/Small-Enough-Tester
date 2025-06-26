@@ -52,8 +52,6 @@ void *set_malloc(size_t n)
     meta->next = NULL;
     meta->prev = NULL;
 
-    fprintf(stdout, "%s\n", "Some malloc");
-
     if (block_meta_head == NULL)
     {
         meta->end = meta;

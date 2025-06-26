@@ -16,13 +16,10 @@ void set_ll_free_all(struct SETBlockMeta *head)
 {
     while (head)
     {
-        printf("Some free.\n");
         void *block_start = head;
         head = head->next;
         free(block_start);
     }
-
-    printf("Some free.\n");
 }
 
 struct SETBlockMeta *set_ll_free_one(struct SETBlockMeta *head, void *address)
