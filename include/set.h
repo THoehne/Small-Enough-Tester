@@ -1,5 +1,6 @@
-
+#ifndef __cplusplus
 #define _GNU_SOURCE
+#endif
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -7,13 +8,15 @@
 #include <sys/mman.h>
 #include <sys/shm.h>
 
+#ifdef __cplusplus
+#include <cstdio>
+
+#endif
+
 #include "utils.h"
 
 #ifndef INCLUDE_SET_H
 #define INCLUDE_SET_H
-
-#define SET_MAX_ERROR_MSG_SIZE 256
-#define SET_MAX_NAME_SIZE 64
 
 /**
  * Meta data for one test function.

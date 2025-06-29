@@ -25,7 +25,8 @@ void set_ll_free_all(struct SETBlockMeta *head)
 struct SETBlockMeta *set_ll_free_one(struct SETBlockMeta *head, void *address)
 {
 
-    struct SETBlockMeta *meta = address - (sizeof(struct SETBlockMeta));
+    struct SETBlockMeta *meta =
+        (struct SETBlockMeta *)address - (sizeof(struct SETBlockMeta));
 
     if (meta->prev == NULL)
     {

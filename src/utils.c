@@ -48,7 +48,7 @@ int create_shared_suit_space(size_t size)
 void *set_malloc(size_t n)
 {
     void *blocks = malloc(n + sizeof(struct SETBlockMeta));
-    struct SETBlockMeta *meta = blocks;
+    struct SETBlockMeta *meta = (struct SETBlockMeta *)blocks;
     meta->next = NULL;
     meta->prev = NULL;
 
