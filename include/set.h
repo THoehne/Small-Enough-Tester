@@ -2,6 +2,11 @@
 #define _GNU_SOURCE
 #endif
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -18,66 +23,66 @@
 #ifndef INCLUDE_SET_H
 #define INCLUDE_SET_H
 
-/**
- * Meta data for one test function.
- *
- * See also: struct SETSuit
- */
-struct SETest
-{
-    void (*function)(struct SETest *test);
-    const char *error_msg;
-    const char *name;
-    bool passed;
-};
+    /**
+     * Meta data for one test function.
+     *
+     * See also: struct SETSuit
+     */
+    struct SETest
+    {
+        void (*function)(struct SETest *test);
+        const char *error_msg;
+        const char *name;
+        bool passed;
+    };
 
-/**
- * Meta data for one test suit.
- *
- * See also: struct SETest
- */
-struct SETSuit
-{
-    const char *name;
-    struct SETest *tests;
-    int len;
-    int shm_key;
-    bool (*setup)();
-    bool (*tear_down)();
-    bool passed;
-};
+    /**
+     * Meta data for one test suit.
+     *
+     * See also: struct SETest
+     */
+    struct SETSuit
+    {
+        const char *name;
+        struct SETest *tests;
+        int len;
+        int shm_key;
+        bool (*setup)();
+        bool (*tear_down)();
+        bool passed;
+    };
 
-/**
- * Internal function header for bundle. Use BUNDLE() macro to define bundle in
- * test.
- */
-void set_bundle_suits(struct SETSuit **suits, int *counter, bool count);
+    /**
+     * Internal function header for bundle. Use BUNDLE() macro to define bundle
+     * in test.
+     */
+    void set_bundle_suits(struct SETSuit **suits, int *counter, bool count);
 
-/**
- * Empty suit_setup. Resolving EMPTY in a suit constructor gets
- * us here.
- *
- * Note: Use EMPTY instead of this function.
- */
-static bool EMPTY_suit_setup() { return true; }
+    /**
+     * Empty suit_setup. Resolving EMPTY in a suit constructor gets
+     * us here.
+     *
+     * Note: Use EMPTY instead of this function.
+     */
+    static bool EMPTY_suit_setup() { return true; }
 
-/**
- * Empty suit_tear_down. Resolving EMPTY in a suit constructor gets
- * us here.
- *
- * Note: Use EMPTY instead of this function.
- */
-static bool EMPTY_suit_tear_down() { return true; }
+    /**
+     * Empty suit_tear_down. Resolving EMPTY in a suit constructor gets
+     * us here.
+     *
+     * Note: Use EMPTY instead of this function.
+     */
+    static bool EMPTY_suit_tear_down() { return true; }
 
-/**
- * Internal header for global setup. Use SETUP() macro instead.
- */
-bool set_up();
+    /**
+     * Internal header for global setup. Use SETUP() macro instead.
+     */
+    bool set_up();
 
-/**
- * Internal header for global tear down. Use TEAR_DOWN() macro instead.
- */
-bool tear_down();
+    /**
+     * Internal header for global tear down. Use TEAR_DOWN() macro instead.
+     */
+    bool tear_down();
 
 /**
  * Global setup function.
@@ -246,3 +251,7 @@ bool tear_down();
     void test_name##_test(struct SETest *test)
 
 #endif // !INCLUDE_SET_H
+
+#ifdef __cplusplus
+}
+#endif

@@ -1,3 +1,6 @@
+#ifndef INCLUDE_SET_LIST_
+#define INCLUDE_SET_LIST_
+
 #include <stddef.h>
 
 struct SETBlockMeta
@@ -31,3 +34,5 @@ void set_ll_free_all(struct SETBlockMeta *head);
  */
 
 struct SETBlockMeta *set_ll_free_one(struct SETBlockMeta *head, void *address);
+
+#endif

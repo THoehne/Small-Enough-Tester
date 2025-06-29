@@ -3,8 +3,8 @@
 
 #include "set.h"
 
-#ifndef ASSERT_H
-#define ASSERT_H
+#ifndef INCLUDE_SET_ASSERT_H
+#define INCLUDE_SET_ASSERT_H
 
 #define STATIC_ASSERT(condition) (void)sizeof(char[1 - 2 * (!(condition))])
 

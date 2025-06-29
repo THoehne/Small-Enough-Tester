@@ -1,5 +1,8 @@
 #include <stddef.h>
 
+#ifndef INCLUDE_SET_UTILS_H_
+#define INCLUDE_SET_UTILS_H_
+
 /*
  * Returns pointer to formatted the string.
  *
@@ -52,3 +55,5 @@ void *set_calloc(size_t n, size_t size);
  * See also: set_malloc()
  */
 void *set_realloc(size_t n);
+
+#endif
