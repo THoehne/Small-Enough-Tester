@@ -2,6 +2,7 @@
 #define _GNU_SOURCE
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <sys/shm.h>
@@ -160,17 +161,17 @@ bool tear_down();
     void suit_name##_suit(struct SETSuit *suit, bool count);                   \
     struct SETSuit *suit_name##_suit_contructor()                              \
     {                                                                          \
-        struct SETSuit *suit =                                                 \
-            mmap(NULL, sizeof(struct SETSuit), PROT_READ | PROT_WRITE,         \
-                 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);                          \
+        struct SETSuit *suit = (struct SETSuit *)mmap(                         \
+            NULL, sizeof(struct SETSuit), PROT_READ | PROT_WRITE,              \
+            MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);                               \
         madvise(suit, sizeof(struct SETSuit), MADV_DONTFORK);                  \
         suit->len = 0;                                                         \
         suit_name##_suit(suit, true);                                          \
         suit->shm_key =                                                        \
             create_shared_suit_space(suit->len * sizeof(struct SETest));       \
         suit->name = #suit_name;                                               \
-        suit->tests = shmat(suit->shm_key, 0, 0);                              \
-        if (suit->tests == (struct SETest *)-1)                                \
+        suit->tests = (struct SETest *)shmat(suit->shm_key, 0, 0);             \
+        if ((uint64_t)suit->tests == -1)                                       \
         {                                                                      \
             fprintf(stderr, "Couldn't attach suit space.\n");                  \
             perror("shmat");                                                   \
