@@ -64,8 +64,6 @@ void *set_malloc(size_t n)
         block_meta_head->end = meta;
     }
 
-    printf("Allocating at address %p\n", blocks);
-
     return blocks + sizeof(struct SETBlockMeta);
 }
 
