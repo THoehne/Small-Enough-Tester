@@ -24,9 +24,10 @@ void set_ll_free_all(struct SETBlockMeta *head)
 
 struct SETBlockMeta *set_ll_free_one(struct SETBlockMeta *head, void *address)
 {
-
     struct SETBlockMeta *meta =
-        (struct SETBlockMeta *)address - (sizeof(struct SETBlockMeta));
+        (struct SETBlockMeta *)(address - (sizeof(struct SETBlockMeta)));
+
+    printf("Freeing: %p\n", meta);
 
     if (meta->prev == NULL)
     {
