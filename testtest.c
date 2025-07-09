@@ -32,6 +32,7 @@ TEST(Faculty_Negative)
 {
     ASSERT_EQ(fac(-2), 1);
     ASSERT_EQ(fac(0), 1);
+    ASSERT_TRUE_MSG(false, "Hello");
 }
 
 SUIT_SETUP(Basic_Setup)
