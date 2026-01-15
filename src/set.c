@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -58,16 +59,18 @@
 
 static void log_test_summary(struct SETest *test)
 {
+
+    double time = test->time.tv_sec * 1000.0 + test->time.tv_usec / 1000.0;
     if (test->passed)
     {
-        printf("Test: %s" ANSI_COLOR_GREEN "    - passed." ANSI_COLOR_RESET"\n",
-               test->name);
+        printf(ANSI_COLOR_GREEN"[ passed ] %s (%.3f ms)" ANSI_COLOR_RESET"\n",
+               test->name, time);
     }
     else
     {
-        printf("Test: %s" ANSI_COLOR_RED "    - failed.\n" ANSI_COLOR_RESET
-               "    Reason: \n    %s\n\n",
-               test->name, test->error_msg);
+        printf( ANSI_COLOR_RED"[ failed ] %s (%.3f ms)\n" 
+               "    "ANSI_COLOR_CYAN"Reason: %s\n\n"ANSI_COLOR_RESET,
+               test->name, time, test->error_msg);
     }
 }
 
@@ -82,9 +85,16 @@ static void dispatch_single_test(struct SETest *test)
 {
     pid_t testPID = fork();
 
+    struct timeval stop, start;
     if (testPID == 0)
     {
+        gettimeofday(&start, NULL);
         test->function(test);
+        gettimeofday(&stop, NULL);
+        
+        test->time.tv_sec = stop.tv_sec - start.tv_sec;
+        test->time.tv_usec = stop.tv_usec - start.tv_usec;
+
         log_test_summary(test);
         set_free_all();
         exit(0);
@@ -144,7 +154,6 @@ static void dispatch_test_suits(struct SETSuit **suits, int counter)
 int main(int argc, char **argv)
 {
 #ifndef NO_BANNER
-
     printf("\n\n%s", BANNER);
 #endif /* ifndef NO_BANNER */
 

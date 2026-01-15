@@ -1,6 +1,5 @@
 #include "set.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 #include "set_asserts.h"
@@ -16,9 +15,10 @@ void heavy_load() { sleep(5); }
 
 SETUP()
 {
-    printf("Setting up.\n");
+    // printf("Setting up.\n");
     return true;
 }
+
 NO_TEAR_DOWN
 
 TEST(Faculty_Basic)
@@ -37,13 +37,13 @@ TEST(Faculty_Negative)
 
 SUIT_SETUP(Basic_Setup)
 {
-    fprintf(stdout, "Some suit setup.\n");
+    // fprintf(stdout, "Some suit setup.\n");
     return true;
 }
 
 SUIT_TEAR_DOWN(Basic_Tear_Down)
 {
-    fprintf(stdout, "Some suit teardown\n");
+    // fprintf(stdout, "Some suit teardown\n");
     return true;
 }
 
@@ -71,14 +71,17 @@ TEST(Other_With_Malloc)
 
     for (int i = 0; i < 20; i++)
     {
-        fprintf(stdout, "%d ", some_array[i]);
+        // fprintf(stdout, "%d ", some_array[i]);
     }
-    fprintf(stdout, ".\n");
+    // fprintf(stdout, ".\n");
 
     set_free(array);
     set_free(some_array);
 
+    // This will be freed automatically
     void *some_other = set_malloc(15);
+    // Just so it doesn't show as unused.
+    (void)some_other;
     ASSERT_TRUE(false);
 }
 

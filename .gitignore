@@ -6,5 +6,5 @@ vgcore*
 
 # Binary
 test
-int/
+.int/
 libset.a

@@ -1,12 +1,18 @@
-# Small-Enough-Tester
+# Small-Enough-Tester (SET)
 
 Tiny C testing framework.
 
-## Building a test.
+## Building
 
-To build a test, first build the library. Then link it to the `test.c` via:
+To build SET as a static lib run:
 
-    gcc src/*.c test.c -o test
+    $ make
+
+The lib is then located at `bin/release/libset.a`.
+
+## Example
+
+An example for a test file is located at [testtest.c](testtest.c)
 
 ## LICENSE
 
